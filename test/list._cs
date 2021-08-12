@@ -1,0 +1,38 @@
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Util;
+
+AmazonS3Config S3Config = new AmazonS3Config
+{
+  ServiceURL = "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints"
+};
+
+string accessKeyId = "6ee60a98c029434cb810d67ce727a21f";
+string secretAccessKey = "eea94fd947fafde16f03a6e984477b0e25cf274f43fcb62f";
+
+AmazonS3Client client = new AmazonS3Client(accessKeyId , secretAccessKey ,S3Config);
+
+// create a bucket
+string bucketName = "ocelot-ira-test-8d9fbed7-a7a7-4f11-9c55-80ad592f30a4-dest";
+// PutBucketRequest request = new PutBucketRequest();
+// request.BucketName = bucketName;
+// client.PutBucket(request);
+
+// simple object put
+// PutObjectRequest requestPut = new PutObjectRequest()
+// {
+//   FilePath = "C://Sites//ibm//Amazon.jpg",
+//   BucketName = bucketName,
+//   Key = "test copy"
+// };
+
+// put object
+//PutObjectResponse response = client.PutObject(requestPut);
+ListObjectsRequest request = new ListObjectsRequest();
+request.BucketName = bucketName;
+ListObjectsResponse response = client.ListObjects(request);
+foreach (S3Object entry in response.S3Objects)
+{
+  Console.WriteLine("key = {0} size = {1}", entry.Key, entry.Size);
+}
